@@ -1,0 +1,12 @@
+#
+# Secrets
+#
+
+.env
+
+#
+# IDE and Language Directories
+#
+.idea/
+.vsc/
+__pycache__/
