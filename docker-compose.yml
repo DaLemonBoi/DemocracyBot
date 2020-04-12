@@ -1,9 +1,24 @@
 version: '3.7'
 
 services:
+
   bot:
     build:
       context: ./
       dockerfile: Dockerfile
+    depends_on:
+      - db
     env_file:
-      - .env
+      - bot.env
+
+  db:
+    image: mariadb
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    env_file:
+      - db.env
+
+volumes:
+  # Database persistence
+  db-data:

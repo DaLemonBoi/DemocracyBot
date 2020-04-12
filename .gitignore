@@ -2,7 +2,8 @@
 # Secrets
 #
 
-.env
+bot.env
+db.env
 
 #
 # IDE and Language Directories
