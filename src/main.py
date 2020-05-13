@@ -18,16 +18,50 @@
 import os
 
 from discord.ext import commands
+import MySQLdb
 
+import config
+from bot import Bot
 from data.prefix import get_guild_prefix
 
 
+bot = Bot(
+    fetch_offline_members=True,
+    command_prefix=get_guild_prefix(),
+    case_insensitive=True,
+    owner_id=config.OWNERS,
+    help_command=None
+)
+
+
+def setup_db():
+    db = MySQLdb.connect(user=config.DB_USER, passwd=config.DB_PASSWORD,
+                         host=config.DB_HOST, port=config.DB_PORT)
+
+    cur = db.cursor()
+    cur.execute("CREATE DATABASE IF NOT EXISTS " + config.DB_DEFAULT_DATABASE)
+    db.commit()
+
+    cur.execute("USE " + config.DB_DEFAULT_DATABASE)
+    cur.execute("CREATE TABLE IF NOT EXISTS test_table (a_number bigint NOT NULL PRIMARY KEY, some_name text)")
+    cur.execute("INSERT INTO test_table (a_number, some_name) VALUES (%s, %s)", (12345678955555, "A string value"))
+    db.commit()
+
+    cur.execute("SELECT * FROM test_table")
+    cur.fetchall()
+
+
+def init_db():
+    pass
+
+
 def main():
+    setup_db()
     client = commands.Bot(command_prefix=get_guild_prefix())
     for filename in os.listdir("./src/commands"):
         if filename.endswith(".py"):
             client.load_extension(f"commands.{filename[:-3]}")
-    client.run(os.environ.get("BOT_TOKEN"))
+    client.run(config.BOT_TOKEN)
 
 
 if __name__ == "__main__":

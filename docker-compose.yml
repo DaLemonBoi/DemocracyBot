@@ -19,6 +19,17 @@ services:
     env_file:
       - db.env
 
+  panel:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      - PMA_PORT=3306
+      - PMA_HOST=db
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
 volumes:
   # Database persistence
   db-data:
