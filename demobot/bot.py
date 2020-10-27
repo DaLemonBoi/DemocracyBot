@@ -18,7 +18,7 @@
 from discord.ext import commands
 import MySQLdb
 
-import config
+import demobot.config as config
 
 
 conn = db = MySQLdb.connect(user=config.DB_USER, passwd=config.DB_PASSWORD,

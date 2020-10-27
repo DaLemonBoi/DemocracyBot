@@ -5,13 +5,12 @@ LABEL "homepage"="https://github.com/AcaGroup/DemocracyBot/"
 
 WORKDIR /DemocracyBot
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
+RUN pip install pipenv
 COPY . .
+RUN pipenv install --system --deply
 
 # Run tests
-RUN python3 ./test/run_tests.py
+RUN python ./test/run_tests.py
 
 # Application entrypoint
-CMD [ "python3", "-u", "./src/main.py" ]
+CMD [ "python", "main.py" ]

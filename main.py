@@ -17,21 +17,23 @@
 
 import os
 
+import discord
 from discord.ext import commands
 import MySQLdb
 
-import config
-from bot import Bot
-from data.prefix import get_guild_prefix
+import demobot.config as config
+from demobot.data.prefix import get_guild_prefix
 
 
-bot = Bot(
-    fetch_offline_members=True,
-    command_prefix=get_guild_prefix(),
-    case_insensitive=True,
-    owner_id=config.OWNERS,
-    help_command=None
-)
+def create_bot():
+    return commands.Bot(
+        intents=discord.Intents(members=True),
+        fetch_offline_members=True,
+        command_prefix=get_guild_prefix(),
+        case_insensitive=True,
+        owner_id=config.OWNERS,
+        help_command=None,
+    )
 
 
 def setup_db():
@@ -44,7 +46,7 @@ def setup_db():
 
     cur.execute("USE " + config.DB_DEFAULT_DATABASE)
     cur.execute("CREATE TABLE IF NOT EXISTS test_table (a_number bigint NOT NULL PRIMARY KEY, some_name text)")
-    cur.execute("INSERT INTO test_table (a_number, some_name) VALUES (%s, %s)", (12345678955555, "A string value"))
+    # cur.execute("INSERT INTO test_table (a_number, some_name) VALUES (%s, %s)", (12345678955555, "A string value"))
     db.commit()
 
     cur.execute("SELECT * FROM test_table")
@@ -57,10 +59,10 @@ def init_db():
 
 def main():
     setup_db()
-    client = commands.Bot(command_prefix=get_guild_prefix())
-    for filename in os.listdir("./src/commands"):
+    client = create_bot()
+    for filename in os.listdir("./demobot/commands"):
         if filename.endswith(".py"):
-            client.load_extension(f"commands.{filename[:-3]}")
+            client.load_extension(f"demobot.commands.{filename[:-len('.py')]}")
     client.run(config.BOT_TOKEN)
 
 
