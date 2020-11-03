@@ -55,12 +55,12 @@ async def setup_db():
 async def main():
     try:
         await setup_db()
-        client = create_bot()
+        bot = create_bot()
         for module_name in bot_commands.__all__:
-            client.load_extension(f"{bot_commands.__name__}.{module_name}")
-        for c in client.commands:
+            bot.load_extension(f"{bot_commands.__name__}.{module_name}")
+        for c in bot.commands:
             print(c.name)
-        await client.start(config.BOT_TOKEN)
+        await bot.start(config.BOT_TOKEN)
     finally:
         await db.close()
 

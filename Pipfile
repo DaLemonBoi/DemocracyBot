@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 "discord.py" = "*"
-mysqlclient = "*"
+aiomysql = "*"
 
 [requires]
 python_version = "3.8"
