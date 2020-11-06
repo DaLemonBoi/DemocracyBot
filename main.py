@@ -21,6 +21,7 @@ import discord
 from discord.ext import commands
 
 import demobot.commands as bot_commands
+import demobot.listeners as bot_listeners
 import demobot.config as config
 from demobot import db
 from demobot.data.prefix import get_guild_prefix
@@ -58,8 +59,10 @@ async def main():
         bot = create_bot()
         for module_name in bot_commands.__all__:
             bot.load_extension(f"{bot_commands.__name__}.{module_name}")
-        for c in bot.commands:
-            print(c.name)
+            print(f'Loaded {module_name}')
+        for module_name in bot_listeners.__all__:
+            bot.load_extension(f"{bot_listeners.__name__}.{module_name}")
+            print(f'Loaded {module_name}')
         await bot.start(config.BOT_TOKEN)
     finally:
         await db.close()

@@ -1,5 +1,3 @@
-# Copyright 2020 Jarred Vardy <vardy@riseup.net>
-#
 # This file is part of DemocracyBot.
 #
 # DemocracyBot is free software: you can redistribute it and/or modify it
@@ -18,14 +16,14 @@
 from discord.ext import commands
 
 
-class ping(commands.Cog):
+class on_ready(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def ping(self, ctx):
-        await ctx.send("pong")
+    async def on_ready(self, ctx):
+        print("Bot enabled")
 
 
 def setup(bot):
-    bot.add_cog(ping(bot))
+    bot.add_cog(on_ready(bot))
