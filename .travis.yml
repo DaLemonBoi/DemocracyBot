@@ -5,7 +5,7 @@ install:
  - pip install pipenv
  - pipenv install
 script:
- - test/run_tests.py
+ - python test/run_tests.py
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
