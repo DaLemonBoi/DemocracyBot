@@ -1,1 +1,1 @@
-__all__ = ['on_ready']
+__all__ = ['on_ready', 'on_user_update']

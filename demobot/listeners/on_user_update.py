@@ -1,0 +1,34 @@
+# This file is part of DemocracyBot.
+#
+# DemocracyBot is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# DemocracyBot is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with DemocracyBot. If not, see http://www.gnu.org/licenses/.
+
+from discord.ext import commands
+from demobot import db
+
+class on_user_update(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.Cog.listener()
+    async def on_user_update(self, before, after):
+        async with await db.connection() as connection, connection.cursor() as cursor:
+            await connection.begin()
+            await cursor.execute(f"USE {config.DB_DEFAULT_DATABASE}")
+            await cursor.execute(f"UPDATE Log SET Target = {after.name}, Subject = {after.name} WHERE Target = {before.name} OR Subject = {before.name}")
+            await connection.commit()
+
+
+
+def setup(bot):
+    bot.add_cog(on_user_update(bot))

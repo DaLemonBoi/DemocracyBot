@@ -46,11 +46,8 @@ async def setup_db():
         await cursor.execute(f"CREATE DATABASE IF NOT EXISTS {config.DB_DEFAULT_DATABASE}")
         await connection.commit()
         await cursor.execute(f"USE {config.DB_DEFAULT_DATABASE}")
-        await cursor.execute(
-            "CREATE TABLE IF NOT EXISTS test_table (a_number bigint NOT NULL PRIMARY KEY, some_name text)")
+        await cursor.execute("CREATE TABLE IF NOT EXISTS Log (DateTime DATETIME(DEFAULT ON UPDATE) NOT NULL, Type VARCHAR(255) NOT NULL, Target VARCHAR(37), Subject VARCHAR(37) NOT NULL)")
         await connection.commit()
-        await cursor.execute("SELECT * FROM test_table")
-        await cursor.fetchall()
 
 
 async def main():
